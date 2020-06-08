@@ -1,0 +1,23 @@
+{% extends 'portal/base.html' %}
+{% block main_page %}
+<div class="page-header header-filter" data-parallax="true">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h1 class="title">Traffic management for modern world.</h1>
+                <h4>Dynamic traffic management system is a modern world traffic control system, which uses density model
+                    to
+                    control street signals. No more useless waiting now. </h4>
+                <br>
+                <a data-toggle="modal" data-target="#myModal2" class="btn btn-outline-info btn-raised btn-lg">
+                    Add crosswalk
+                </a>
+
+            </div>
+            <div class="col-md-6 pl-4">
+                <img src="{{ url_for('portal.static' filename='svg/home.svg' )}}" style="width: 120%; float: left;" alt="">
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

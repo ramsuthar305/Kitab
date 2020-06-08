@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Hello World!</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet">
+
+  <!-- Icons -->
+  <!-- <link href="/assets/vendor/nucleo/css/nucleo-icons.css" rel="stylesheet"> -->
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+  <!-- Argon CSS -->
+  <link type="text/css" href="{{ url_for('portal.static',  filename='css/argon-design-system.css') }}" rel="stylesheet">
+  <link type="text/css" href="{{ url_for('portal.static',  filename='css/nucleo-icons.css') }}" rel="stylesheet">
+</head>
+
+<body>
+
+  {% block main_page %}
+  {% endblock %}
+  <!-- Core -->
+  <script src="{{ url_for('portal.static',  filename='js/core/jquery.min.js') }}"></script>
+  <script src="{{ url_for('portal.static',  filename='js/core/popper.min.js') }}"></script>
+  <script src="{{ url_for('portal.static',  filename='js/core/bootstrap.min.js') }}"></script>
+  <script>
+    var pageHeight = window.innerHeight;
+    var currScroll = document.body.scrollTop;
+    document.addEventListener('wheel', function (e) {
+      //console.log(e.deltaY);
+      if (< pageHeight) {
+        scrollDown();
+      }
+    }
+    );
+
+
+    function scrollDown() {
+      var newScroll = currScroll + pageHeight;
+      document.body.scrollTop = newScroll;
+    }
+
+
+  </script>
+  <!-- Optional plugins -->
+  <script src="/assets/vendor/PLUGIN_FOLDER/PLUGIN_SCRIPT.js"></script>
+
+  <!-- Argon JS -->
+  <script src="{{ url_for('portal.static',  filename='js/argon-design-system.js') }}"></script>
+</body>
+
+</html>
