@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-  <title>Hello World!</title>
+  <title>Kitab</title>
 
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet">
@@ -19,7 +19,7 @@
   <link type="text/css" href="{{ url_for('portal.static',  filename='css/nucleo-icons.css') }}" rel="stylesheet">
 </head>
 
-<body>
+<body style="background-color: #f9fafa;">
 
   {% block main_page %}
   {% endblock %}
@@ -32,7 +32,7 @@
     var currScroll = document.body.scrollTop;
     document.addEventListener('wheel', function (e) {
       //console.log(e.deltaY);
-      if (< pageHeight) {
+      if (e.deltaY < pageHeight) {
         scrollDown();
       }
     }

@@ -1,8 +1,8 @@
 {% extends 'portal/base.html' %}
 {% block main_page %}
-<div class="container">
+<div class="bg-white">
     {% include 'portal/header.html' %}
-    <div class="tagline-section">
+    <div class="tagline-section container bg-white">
 
         <div class="row" style="height: 95vh; ">
             <div class="col-md-6 text-center m-auto">
@@ -39,7 +39,7 @@
                 <div class="d-flex justify-content-between">
 
                     <h5 class="pl-2" style="font-weight: 600;">Classics</h5>
-                    <a href="">
+                    <a href="{{url_for('portal.viewall')}}">
                         <h6 class="pl-2" style="font-weight: 500;">view all </h6>
                     </a>
                 </div>

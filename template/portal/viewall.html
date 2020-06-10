@@ -1,0 +1,39 @@
+{% extends 'portal/base.html' %}
+{% block main_page %}
+<div class="bg-white">
+    {% include 'portal/header.html' %}
+    <hr>
+    <div class="container">
+        <div class="d-flex justify-content-between h-100 my-4">
+            <h2 class="display-2 pl-2">Classics</h2>
+            <div class="searchbar">
+                <input class="search_input" type="text" name="" placeholder="Search...">
+                <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
+            </div>
+        </div>
+
+        <div class="d-flex flex-wrap">
+            {% for i in range(20) %}
+            <div class=" col-md-3 py-3 px-2">
+                <div class="card pb-2">
+                    <div class="m-auto">
+                        <img src="https://images-na.ssl-images-amazon.com/images/I/516ga-QDjAL._SX326_BO1,204,203,200_.jpg"
+                            alt="" class="m-auto rounded pt-2" style="width: 90%;display: block;">
+                    </div>
+                    <div class="pt-2">
+                        <h5 class="h-4 text-center" style="font-weight: bold;">Revolution 2020</h5>
+                        <p class=" text-center" style="margin-top: -5%;">Chetan bhagat</p>
+                    </div>
+                    <div class="text-center m-auto">
+                        <button class="btn btn-link p-0 text-default"><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                            Add to cart
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

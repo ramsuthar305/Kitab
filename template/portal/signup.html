@@ -1,103 +1,129 @@
 {% extends 'portal/base.html' %}
 {% block main_page %}
-<div class="signup-page container" style="margin-top: 10vh;">
-  {% with messages = get_flashed_messages() %}
-  {% if messages %}
-  {% for message in messages %}
-  <div class="alert alert-warning alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span
-        aria-hidden="true">×</span></button>
-    {{message}}
-  </div>
-  {% endfor %}
-  {% endif %}
-  {% endwith %}
-  <div class="row">
-    <div class="col-md-10 ml-auto mr-auto">
-      <div class="card card-signup">
-        <h2 class="card-title text-center">Register</h2>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-5 ml-auto">
-              <div class="info info-horizontal">
-                <div class="icon icon-rose">
-                  <i class="material-icons">timeline</i>
-                </div>
-                <div class="description">
-                  <h4 class="info-title">Get Recognised</h4>
-                  <p class="description">
-                    Osmosis provides best ways to get yourself Recognised in many companies that you would like to work
-                    for.
-                  </p>
-                </div>
+<div class="bg-white">
+  {% include 'portal/header.html' %}
+
+  <div class="container">
+    <section class="section section-shaped section-lg">
+
+      <div class="container pt-lg-1">
+        <div class="row justify-content-center">
+          <div class="col-lg-6">
+            <div class="card bg-secondary shadow border-0">
+              <div class="card-header bg-white pb-3 text-center">
+                <a class="navbar-brand" href="#">
+                  <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_d3R1M5.json"
+                    background="transparent" speed="1" style="width: 100px; height: 80px;" loop autoplay>
+                  </lottie-player>
+                  <span style="font-size: large;">
+                    Kitab
+                  </span>
+                </a>
               </div>
-              <div class="info info-horizontal">
-                <div class="icon icon-primary">
-                  <i class="material-icons">code</i>
+              <div class="card-body px-lg-5 py-lg-5">
+                <div class="text-center text-muted mb-4">
+                  <small>sign up with credentials</small>
                 </div>
-                <div class="description">
-                  <h4 class="info-title">Skill testing</h4>
-                  <p class="description">
-                    Osmosis skill test ensures that you don't get rejected from the company directly, instead we do it
-                    for them by testing your skills.
-                  </p>
-                </div>
+                <form role="form" action="{{url_for('portal.register')}}" method="POST">
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-hat-3"></i></span>
+                      </div>
+                      <input class="form-control" name="name" required placeholder="Name" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-email-83"></i></span>
+                      </div>
+                      <input class="form-control" name="email" required placeholder="Email" type="email">
+                    </div>
+                  </div>
+
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-building"></i></span>
+                      </div>
+                      <input class="form-control" name="address_line1" required placeholder="Address Lane/Society/Flat" type="text">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="input-group input-group-alternative mb-3">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-square-pin"></i></span>
+                      </div>
+                      <input class="form-control" name="address_line2" required placeholder="Address Town" type="text">
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="form-group col">
+                      <div class="input-group input-group-alternative  ">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-map-big"></i></span>
+                        </div>
+                        <input class="form-control" name="city" required placeholder="Address City" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group col">
+                      <div class="input-group input-group-alternative  ">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-pin-3"></i></span>
+                        </div>
+                        <input class="form-control" name="pincode" required placeholder="Pincode" type="text">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="form-group col">
+                      <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-istanbul"></i></span>
+                        </div>
+                        <input class="form-control" name="state" required placeholder="State" type="text">
+                      </div>
+                    </div>
+                    <div class="form-group col">
+                      <div class="input-group input-group-alternative">
+                        <div class="input-group-prepend">
+                          <span class="input-group-text"><i class="ni ni-mobile-button"></i></span>
+                        </div>
+                        <input class="form-control" name="phone" required placeholder="Phone" type="text">
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="form-group focused">
+                    <div class="input-group input-group-alternative">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text"><i class="ni ni-lock-circle-open"></i></span>
+                      </div>
+                      <input class="form-control" name="password" required placeholder="Password" type="password">
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="custom-control custom-control-alternative custom-checkbox">
+                      <input class="custom-control-input" required id="customCheckRegister" type="checkbox">
+                      <label class="custom-control-label" for="customCheckRegister"><span>I agree with the <a
+                            href="#">Privacy Policy</a></span></label>
+                    </div>
+                  </div>
+
+                  <div class="text-center pb-4">
+                    <button type="submit" class="btn btn-primary mt-4">Create account</button>
+                  </div>
+                </form>
               </div>
-
             </div>
-            <div class="col-md-5 mr-auto">
 
-              <form class="form" method="POST" action="{{url_for('portal.signup')}}">
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons">face</i>
-                      </span>
-                    </div>
-                    <input type="text" class="form-control" name="name" placeholder="First Name...">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons">mail</i>
-                      </span>
-                    </div>
-                    <input type="text" class="form-control" name="email" placeholder="Email...">
-                  </div>
-                </div>
-                <div class="form-group">
-                  <div class="input-group">
-                    <div class="input-group-prepend">
-                      <span class="input-group-text">
-                        <i class="material-icons">lock_outline</i>
-                      </span>
-                    </div>
-                    <input type="password" placeholder="Password..." name="password" class="form-control" />
-                  </div>
-                </div>
-                <div class="text-center m-auto">
-                  <div class="text-center m-auto col-md-6">
-                    <a type="submit" class="btn btn-primary btn-round btn-block m-auto text-white">Sign up</a>
-                  </div>
-                </div>
-                <div class="mt-3">
-                  <p class="description text-center">Account already exists? </p>
-                </div>
-
-                <div class="text-center m-auto col-md-6">
-                  <a href="{{url_for('portal.signin')}}" class="btn btn-primary btn-link">Sign in</a>
-                </div>
-
-              </form>
-            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   </div>
-</div>
 </div>
 {% endblock %}

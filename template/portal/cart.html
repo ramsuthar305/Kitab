@@ -1,0 +1,71 @@
+{% extends 'portal/base.html' %}
+{% block main_page %}
+<div>
+    {% include 'portal/header.html' %}
+    <div class="container-fluid mt-4" style="font-family:Open Sans,sans-serif;padding-right: 17%; padding-left: 17%;">
+        <div class="row">
+            <div class="col-md-8 rounded bg-white shadow-sm table-responsive-sm  pr-2">
+                <table class="table table-borderless">
+                    <thead>
+                        <tr>
+                            <th scope="col">Cover</th>
+                            <th scope="col">Book</th>
+                            <th scope="col">Author</th>
+                            <th scope="col">Qty</th>
+                            <th scope="col">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for i in range(10) %}
+                        <tr class="my-2 border-bottom" rowspan="2">
+                            <td>
+                                <div style=" width: 5vh;">
+                                    <img src="https://images-na.ssl-images-amazon.com/images/I/516ga-QDjAL._SX326_BO1,204,203,200_.jpg"
+                                        alt="" class="m-auto rounded pt-2" style="width: 100%; display: block;">
+                                </div>
+                            </td>
+                            <td>Revolution 2020</td>
+                            <td>Chetan bhagat</td>
+                            <td>9999</td>
+                            <td>99.99</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-md-4 pl-3 ">
+                <div class="rounded bg-white shadow px-3 py-4">
+                    <div class="display-4 text-center pb-4">Order Summary</div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            Total
+                        </div>
+                        <div class="col-md-6 text-right">
+                            Rs. 5784
+                        </div>
+                    </div>
+                    <div class="row py-2">
+                        <div class="col-md-6">
+                            GST 18%
+                        </div>
+                        <div class="col-md-6 text-right">
+                            + Rs. 578
+                        </div>
+                    </div>
+                    <div class="row font-weight-bold border-top py-2">
+                        <div class="col-md-6">
+                            Net Total
+                        </div>
+                        <div class="col-md-6 text-right">
+                            Rs. 6498
+                        </div>
+                    </div>
+                    <div class="p-3">
+                        <div class="btn btn-success btn-block">Checkout</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

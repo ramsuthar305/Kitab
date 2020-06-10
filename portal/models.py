@@ -21,23 +21,26 @@ class Users:
 		try:
 			result = mongo.db.users.insert_one({
 				"_id":user['username'],
-				"username":user['username'],
-				"password":user['password'],
-				"phone":user['phone'],
-				"address":user['address'],
-				"name":user['name'],
-				"resume":user['resume'],
-				"profile_picture":user['profile_picture'],
-				"user_type":"normal"
+				"username":user["email"],
+                "name":user["name"],
+                "password":user["password"],
+                "phone":user["phone"],
+                "cart":user["cart"],
+                "profile_picture":user["profile_picture"],
+                "address_line1":user["address_line1"],
+                "address_line2":user["address_line2"],
+                "orders":user["orders"],
+                "city":user["city"],
+                "pincode":user["pincode"],
+                "state":user["state"],
+                "created_on":user["created_on"],
+                "last_login":user["last_login"],
 			})
 			if result:
 				print(result)
-				session["username"] = user["username"]
-				session["name"] = user["name"]
-				session["logged_in"] = True
-				session["user_type"] = "normal"
-				session['id'] = str(user["username"])
 				return True
+			else:
+				return "Opps something went wrong"
 
 		except Exception as error:
 			print(error)
@@ -54,7 +57,6 @@ class Users:
 				session["username"] = login_result["username"]
 				session["name"] = login_result["name"]
 				session["logged_in"] = True
-				session["user_type"] = login_result['user_type']
 				session['id'] = str(login_result["_id"])
 				return True
 			else:
