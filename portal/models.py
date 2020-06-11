@@ -16,6 +16,13 @@ class Users:
 			return True
 		else:
 			return False
+	
+	def check_password(self,password):
+		result=self.mongo.users.find_one({"password":password})
+		if result:
+			return True
+		else:
+			return False
 
 	def save_user(self,user):
 		try:
@@ -100,4 +107,40 @@ class Users:
 			print(error)
 			return True
 
-	
+	def add_item_cart(self,book_id):
+		try:
+			book_exists = self.mongo.users.find_one({"$and": [{"_id": session["id"]}, {"cart._id": ObjectId(book_id)}]})
+			if book_exists is not None:
+				return "Book already exists in the cart"
+			book={"_id":ObjectId(book_id),"qty":1}
+			self.mongo.users.update_one({"_id": session["id"]},{ "$push": { "cart": book } })
+			return True
+		except Exception as error:
+			print(error)
+			if error.code == 11000:
+				return "Book already exists in the cart"
+			else:
+				return error
+
+	def cart_length(self):
+		try:
+			user=self.mongo.users.find_one({"_id": session["id"]})
+			return len(user['cart'])
+		except Exception as error:
+			print(error)
+
+	def get_user_cart(self):
+		try:
+			user=self.mongo.users.find_one({"_id": session["id"]})
+			return user['cart']
+		except Exception as error:
+			print(error)
+			
+	def user_edit(self, data):
+		try:
+			result = self.mongo.users.update_one({"_id": session["id"]}, {"$set": data})
+			print(result)
+			return True
+		except Exception as error:
+			print(error)
+			return False

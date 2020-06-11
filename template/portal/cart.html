@@ -16,18 +16,18 @@
                         </tr>
                     </thead>
                     <tbody>
-                        {% for i in range(10) %}
+                        {% for book in detailed_cart['books'] %}
                         <tr class="my-2 border-bottom" rowspan="2">
                             <td>
                                 <div style=" width: 5vh;">
-                                    <img src="https://images-na.ssl-images-amazon.com/images/I/516ga-QDjAL._SX326_BO1,204,203,200_.jpg"
+                                    <img src="{{book['front_cover']}}"
                                         alt="" class="m-auto rounded pt-2" style="width: 100%; display: block;">
                                 </div>
                             </td>
-                            <td>Revolution 2020</td>
-                            <td>Chetan bhagat</td>
-                            <td>9999</td>
-                            <td>99.99</td>
+                            <td>{{book['title']}}</td>
+                            <td>{{book['author']}}</td>
+                            <td>{{book['qty']}}</td>
+                            <td>{{book['price']}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
@@ -41,7 +41,7 @@
                             Total
                         </div>
                         <div class="col-md-6 text-right">
-                            Rs. 5784
+                            Rs. {{detailed_cart['total']}}
                         </div>
                     </div>
                     <div class="row py-2">
@@ -49,7 +49,7 @@
                             GST 18%
                         </div>
                         <div class="col-md-6 text-right">
-                            + Rs. 578
+                            + Rs. {{detailed_cart['gst']}}
                         </div>
                     </div>
                     <div class="row font-weight-bold border-top py-2">
@@ -57,7 +57,7 @@
                             Net Total
                         </div>
                         <div class="col-md-6 text-right">
-                            Rs. 6498
+                            Rs. {{detailed_cart['net_total']}}
                         </div>
                     </div>
                     <div class="p-3">

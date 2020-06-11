@@ -41,7 +41,7 @@
                 {% if session['logged_in'] %}
                 <li class="nav-item">
                     <a class="nav-link nav-link text-default" href="{{url_for('portal.cart')}}">
-                        <i class="ni ni-cart"></i><small class="badge badge-pill badge-success">10</small>
+                        <i class="ni ni-cart"></i><small class="badge badge-pill badge-success" id="cartLength">10</small>
                     </a>
                 </li>
                 <li class="nav-item dropdown">

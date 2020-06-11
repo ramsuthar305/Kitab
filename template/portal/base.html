@@ -44,7 +44,45 @@
       document.body.scrollTop = newScroll;
     }
 
+    function addToCart(id) {
+      alert('clicked: ' + id)
 
+      $.ajax({
+        url: '{{url_for("portal.add_to_cart")}}',
+        data: id,
+        type: 'POST',
+        success: function (response) {
+          if (response.status == "OK") {
+            alert("Cart length: " + response.length);
+            $("#cartLength").html(response.length);
+          }
+          if (response.status == "ERROR") {
+            alert(response.error);
+          }
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
+
+    $(document).ready(function () {
+      $.ajax({
+        url: '{{url_for("portal.cart_length")}}',
+        type: 'GET',
+        success: function (response) {
+          if (response.status == "OK") {
+            $("#cartLength").html(response.length);
+          }
+          if (response.status == "ERROR") {
+            alert(response.error);
+          }
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    });
   </script>
   <!-- Optional plugins -->
   <script src="/assets/vendor/PLUGIN_FOLDER/PLUGIN_SCRIPT.js"></script>

@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <title>Kitab</title>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:200,300,400,600,700,800" rel="stylesheet">
+
+  <!-- Icons -->
+  <!-- <link href="/assets/vendor/nucleo/css/nucleo-icons.css" rel="stylesheet"> -->
+  <link href="https://use.fontawesome.com/releases/v5.0.6/css/all.css" rel="stylesheet">
+
+  <!-- Argon CSS -->
+
+  <link type="text/css" href="{{ url_for('admin.static',  filename='css/nucleo-icons.css') }}" rel="stylesheet">
+  <link type="text/css" href="{{ url_for('admin.static',  filename='vendor/argon.css') }}" rel="stylesheet">
+  <link type="text/css" href="{{ url_for('admin.static',  filename='vendor/nucleo/css/nucleo.css') }}" rel="stylesheet">
+</head>
+
+<body style="background-color: #f9fafa;">
+
+  {% block main_page %}
+  {% endblock %}
+  <!-- Core -->
+  <script>
+    var pageHeight = window.innerHeight;
+    var currScroll = document.body.scrollTop;
+    document.addEventListener('wheel', function (e) {
+      //console.log(e.deltaY);
+      if (e.deltaY < pageHeight) {
+        scrollDown();
+      }
+    }
+    );
+    
+    
+    function scrollDown() {
+      var newScroll = currScroll + pageHeight;
+      document.body.scrollTop = newScroll;
+    }
+    
+    
+    </script>
+ 
+  <script src="{{ url_for('admin.static',  filename='vendor/js/argon.js?v=1.2.0') }}"></script>
+  <script src="{{ url_for('admin.static',  filename='vendor/jquery/dist/jquery.min.js') }}"></script>
+  <script src="{{ url_for('admin.static',  filename='vendor/bootstrap/dist/js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('admin.static',  filename='vendor/js-cookie/js.cookie.js') }}"></script>
+  <script src="{{ url_for('admin.static',  filename='vendor/jquery.scrollbar/jquery.scrollbar.min.js') }}"></script>
+  <script src="{{ url_for('admin.static',  filename='vendor/chart.js/dist/Chart.min.js')}}"></script>
+  <script src="{{ url_for('admin.static',  filename='vendor/chart.js/dist/Chart.extension.js')}}"></script>
+  <script
+    src="{{ url_for('admin.static',  filename='vendor/jquery-scroll-lock/dist/jquery-scrollLock.min.js') }}"></script>
+  <script src="/assets/vendor/PLUGIN_FOLDER/PLUGIN_SCRIPT.js"></script>
+
+  <!-- Argon JS -->
+
+</body>
+
+</html>

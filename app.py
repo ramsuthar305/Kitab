@@ -7,10 +7,10 @@ app.config.from_object("config.Config")
 mongo = PyMongo(app)
 # csrf = CSRFProtect(app)
 
-#from admin.views import admin
+from admin.views import admin
 from portal.views import portal
 
-#app.register_blueprint(admin, url_prefix='/admin')
+app.register_blueprint(admin, url_prefix='/admin')
 app.register_blueprint(portal, url_prefix='')
 
 

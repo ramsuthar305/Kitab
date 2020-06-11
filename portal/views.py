@@ -6,6 +6,9 @@ import json
 from datetime import datetime
 #custom imports
 from .models import Users
+from admin.models import Books
+
+book_object = Books()
 user_object = Users()
 portal = Blueprint("portal", __name__, template_folder='../template', static_folder='../static',
                    static_url_path='../static')
@@ -20,7 +23,9 @@ def page_not_found(error):
 
 @portal.route('/')
 def index():
-    return render_template('portal/home.html')
+    books = book_object.get_books()
+    print(books)
+    return render_template('portal/home.html',books=books)
     
 
 @portal.route('/viewall')
@@ -29,7 +34,20 @@ def viewall():
 
 @portal.route('/cart')
 def cart():
-    return render_template('portal/cart.html')
+    cart=user_object.get_user_cart()
+    total=0
+    books=[]
+    detailed_cart={}
+    for item in cart:
+        book=book_object.get_book_by_id(item['_id'])
+        book['qty']=item['qty']
+        books.append(book)
+        total=total+int(book['price'])*int(item['qty'])
+    detailed_cart['books']=books
+    detailed_cart['total']=total
+    detailed_cart['gst']=(total*18)/100
+    detailed_cart['net_total']=((total*18)/100)+total
+    return render_template('portal/cart.html',detailed_cart=detailed_cart)
 
 
 @portal.route('/profile')
@@ -40,8 +58,33 @@ def profile():
 
 @portal.route('/product')
 def product():
-    return render_template('portal/product.html')
+    book=book_object.get_book_by_id(ObjectId(request.args.get('book_id')))
+    print(book)
+    return render_template('portal/product.html',book=book)
 
+@portal.route('/add_to_cart',methods=["POST"])
+def add_to_cart():
+    try:
+        id=request.get_data()
+        print('id:',type(id.decode("utf-8")))
+        status=user_object.add_item_cart(id.decode("utf-8"))
+        if status==True:
+            res={"status":"OK","length":str(user_object.cart_length())}
+            return jsonify(res)
+        else:
+            res={"status":"ERROR","error":status}
+            return jsonify(res)
+    except Exception as e:
+        print(e)
+        
+@portal.route('/cart_length',methods=["GET"])
+def cart_length():
+    try:
+        res={"status":"OK","length":str(user_object.cart_length())}
+        return jsonify(res)
+    except Exception as error:
+        res={"status":"ERROR","error":error}
+        return jsonify(res)
 
 @portal.route('/register', methods=['POST','GET'])
 def register():
@@ -145,22 +188,41 @@ def edit_profile():
 
             
             update_data={}
-            
-            if request.form.get('current_password'):
-                update_data['current_password']=request.form.get('current_password')
-            
             if request.form.get('new_password'):
-                update_data['new_password']=request.form.get('new_password')
+                if request.form.get('new_password')==request.form.get('confirm_password'):
+                    if user_object.check_password(request.form.get('current_password')):
+                        update_data['password']=request.form.get('new_password')
+                    else:
+                        flash('Incorrect current password! profile edit failed.')
+                        #return render_template('portal/profile.html')
+                        return redirect(url_for('portal.profile'))    
             
-            if request.form.get('confirm_password'):
-                update_data['confirm_password']=request.form.get('confirm_password')
-            
-            if request.form.get('address'):
-                update_data['address']=request.form.get('address') 
-            
-            # if update_data:
-            #     user_object.user_edit(update_data)
+            if request.form.get('email'):
+                update_data['email']=request.form.get('email')
+
+            if request.form.get('name'):
+                update_data['name']=request.form.get('name')
+
+            if request.form.get('address_line1'):
+                update_data['address_line1']=request.form.get('address_line1')
+
+            if request.form.get('address_line2'):
+                update_data['address_line2']=request.form.get('address_line2')
+
+            if request.form.get('city'):
+                update_data['city']=request.form.get('city')
+
+            if request.form.get('pincode'):
+                update_data['pincode']=request.form.get('pincode')
+
+            if request.form.get('state'):
+                update_data['state']=request.form.get('state')
+
+            if request.form.get('phone'):
+                update_data['phone']=request.form.get('phone')
+
             print(update_data)
+            status=user_object.user_edit(update_data)
             return redirect(url_for('portal.profile'))
     except Exception as error:
         return redirect(url_for('portal.profile'))
