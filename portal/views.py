@@ -8,13 +8,16 @@ from bson import ObjectId
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
-
+import random
+import string
 #custom imports
 from .models import Users
+from .models import Orders
 from admin.models import Books
 
 book_object = Books()
 user_object = Users()
+order_object = Orders()
 portal = Blueprint("portal", __name__, template_folder='../template', static_folder='../static',
                    static_url_path='../static')
 
@@ -262,53 +265,58 @@ def edit_profile():
     except Exception as error:
         return redirect(url_for('portal.profile'))
 
+@portal.route('/checkout',methods=["GET"])
+def checkout():
+    cart=user_object.get_user_cart()
+    total=0
+    books=[]
+    detailed_cart={}
+    message="Your order has been placed here your purchase record\n"
+    for item in cart:
+        book=book_object.get_book_by_id(item['_id'])
+        print(book)
+        book['qty']=item['qty']
+        books.append(book)
+        message=message+"{} by {} qty: {} | price: {} | total:{}\n".format(book['title'],book['author'],book['qty'],book['price'],int(book['qty'])*int(book['price']))
+        total=total+int(book['price'])*int(item['qty'])
+    detailed_cart['books']=books
+    detailed_cart['total']=total
+    detailed_cart['gst']=(total*18)/100
+    detailed_cart['net_total']=((total*18)/100)+total
+    message=message+"____________________________________________________________\n Total: {}\n GST 18%: {}\n Net total:{}".format(detailed_cart['total'],detailed_cart['gst'],detailed_cart['net_total'])
+    send_email(session["id"],message,"Order placed")
+    order_object.place_order(cart,detailed_cart)
+    return redirect(url_for('portal.cart'))
+
 @portal.route('/forget_password',methods=["GET","POST"])
 def forget_password():
-    send_email("ramsuthar305@gmail.com","hii","forget my password")
-    return redirect(url_for('portal.signin'))
+    if request.method=="POST":
+        email=request.form.get("email")
+        lettersAndDigits = string.ascii_letters + string.digits
+        new_password=''.join((random.choice(lettersAndDigits) for i in range(9)))
+        status=user_object.forget_password(new_password,email)
+        if status==True:
+            message="Hello, your new password for Kitab.com account is "+new_password
+            send_email("ramsuthar305@gmail.com",message,"New password")
+            flash("New password has been sent to the registered email id")
+            return redirect(url_for('portal.forget_password'))
+        else:
+            flash("Something went wrong")
+            return redirect(url_for('portal.signin'))
+    else:
+        return render_template("portal/forget_password.html")
 
-def send_email(to,message,subject):
+def send_email(to,msg,subject):
+    port = 587  # For starttls
+    smtp_server = "smtp.gmail.com"
     sender_email = "kitaab.info123@gmail.com"
     receiver_email = to
     password = "123@cnd@"
-
-    message = MIMEMultipart("alternative")
-    message["Subject"] = subject
-    message["From"] = sender_email
-    message["To"] = receiver_email
-
-    # Create the plain-text and HTML version of your message
-    text = """\
-    Hi,
-    How are you?
-    Real Python has many great tutorials:
-    www.realpython.com"""
-    html = """\
-    <html>
-    <body>
-        <p>Hi,<br>
-        How are you?<br>
-        <img src="https://images-eu.ssl-images-amazon.com/images/I/51btCZ-13mL._SY445_QL70_ML2_.jpg">
-        <a href="http://www.realpython.com">Real Python</a> 
-        has many great tutorials.
-        </p>
-    </body>
-    </html>
-    """
-
-    # Turn these into plain/html MIMEText objects
-    part1 = MIMEText(text, "plain")
-    part2 = MIMEText(html, "html")
-
-    # Add HTML/plain-text parts to MIMEMultipart message
-    # The email client will try to render the last part first
-    message.attach(part1)
-    message.attach(part2)
-
-    # Create secure connection with server and send email
+    message='Subject:'+subject+"\n\n"+msg 
     context = ssl.create_default_context()
-    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.ehlo()  # Can be omitted
+        server.starttls(context=context)
+        server.ehlo()  # Can be omitted 
         server.login(sender_email, password)
-        server.sendmail(
-            sender_email, receiver_email, message.as_string()
-        )
+        server.sendmail(sender_email, receiver_email, message)

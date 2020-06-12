@@ -71,6 +71,15 @@ class Users:
 		except Exception as error:
 			return error
 
+	def forget_password(self,new_password,email):
+		try:
+			result = self.mongo.users.update_one({"_id": email}, {"$set": {"password":new_password}})
+			print(result)
+			return True
+		except Exception as error:
+			print(error)
+			return False
+
 	def get_user_profile(self):
 		try:
 			user_profile=self.mongo.users.find_one({"username": session["username"]})
@@ -170,7 +179,6 @@ class Users:
 		else:
 			return {'status':False,error:"Books out of stock"}
 
-
 	def user_edit(self, data):
 		try:
 			result = self.mongo.users.update_one({"_id": session["id"]}, {"$set": data})
@@ -179,3 +187,22 @@ class Users:
 		except Exception as error:
 			print(error)
 			return False
+	
+	def push_order(self,data):
+		try:
+			result = self.mongo.users.update_one({"_id": session["id"]},{ "$push": { "orders": data } })
+			print(result)
+			return True
+		except Exception as error:
+			print(error)
+			return False
+
+class Orders:
+	def __init__(self):
+		self.mongo = mongo.db
+		self.user_object=Users()
+
+	def place_order(self,cart,order):
+		self.user_object.user_edit({"cart":[]})
+		self.user_object.push_order(order)
+
