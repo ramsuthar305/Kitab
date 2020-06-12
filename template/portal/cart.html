@@ -4,6 +4,7 @@
     {% include 'portal/header.html' %}
     <div class="container-fluid mt-4" style="font-family:Open Sans,sans-serif;padding-right: 17%; padding-left: 17%;">
         <div class="row">
+            {% if detailed_cart['books']|length > 0 %}
             <div class="col-md-8 rounded bg-white shadow-sm table-responsive-sm  pr-2">
                 <table class="table table-borderless">
                     <thead>
@@ -20,19 +21,35 @@
                         <tr class="my-2 border-bottom" rowspan="2">
                             <td>
                                 <div style=" width: 5vh;">
-                                    <img src="{{book['front_cover']}}"
-                                        alt="" class="m-auto rounded pt-2" style="width: 100%; display: block;">
+                                    <img src="{{book['front_cover']}}" alt="" class="m-auto rounded pt-2"
+                                        style="width: 100%; display: block;">
                                 </div>
                             </td>
                             <td>{{book['title']}}</td>
                             <td>{{book['author']}}</td>
-                            <td>{{book['qty']}}</td>
+                            <td style="width: 30hw; text-align: center; margin: auto;"> <button
+                                    class="btn btn-neutral p-0 px-1" id="{{book['_id']}}"
+                                    onclick="changeQty('minus',this.id)"><i class="ni ni-fat-delete"></i></button><span
+                                    id="{{book['_id']}}id"> {{book['qty']}} </span><button
+                                    class="btn btn-neutral p-0 px-1" id="{{book['_id']}}"
+                                    onclick="changeQty('add',this.id)"><i class="ni ni-fat-add"></i></button></td>
                             <td>{{book['price']}}</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
+            {% else %}
+            <div class="col-md-8 m-auto rounded bg-white shadow-sm pb-4">
+                <div class="m-auto">
+                    <lottie-player class="m-auto" src="https://assets2.lottiefiles.com/temp/lf20_jzqS18.json" background="transparent"
+                        speed="1" style="width: 300px; height: 300px;" loop autoplay></lottie-player>
+                        <h4 class="text-center text-muted">
+                            You have no books in the cart
+                        </h4>
+                </div>
+            </div>
+            {% endif %}
             <div class="col-md-4 pl-3 ">
                 <div class="rounded bg-white shadow px-3 py-4">
                     <div class="display-4 text-center pb-4">Order Summary</div>
@@ -65,6 +82,7 @@
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 </div>

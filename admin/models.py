@@ -57,6 +57,10 @@ class Books:
 		book=self.mongo.books.find_one({"_id":id})
 		return book
 
+	def get_books_by_genre(self,genre):
+		books=list(self.mongo.books.find({"genre":genre}))
+		return books
+
 	def user_edit(self, data):
 		try:
 			result = self.mongo.users.update_one({"_id": session["id"]}, {"$set": data})

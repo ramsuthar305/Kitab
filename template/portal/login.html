@@ -4,6 +4,21 @@
     {% include 'portal/header.html' %}
 
     <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        {% for message in messages %}
+
+
+        <div class="container alert alert-danger alert-dismissible fade show mt-4" role="alert">
+            <strong>Invalid credentials!</strong> {{message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+
+        {% endfor %}
+        {% endif %}
+        {% endwith %}
         <section class="section section-shaped section-lg">
             <div class="shape shape-style-1 bg-gradient-default">
                 <span></span>
@@ -21,17 +36,18 @@
                         <div class="card bg-secondary shadow border-0">
                             <div class="card-header bg-white pb-3 text-center">
                                 <a class="navbar-brand" href="#">
-                                    <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_d3R1M5.json" background="transparent"
-                                        speed="1" style="width: 100px; height: 80px;" loop autoplay></lottie-player>
+                                    <lottie-player src="https://assets3.lottiefiles.com/packages/lf20_d3R1M5.json"
+                                        background="transparent" speed="1" style="width: 100px; height: 80px;" loop
+                                        autoplay></lottie-player>
                                     <span style="font-size: large;">
                                         Kitab
-                                    </span> 
+                                    </span>
                                 </a>
                             </div>
                             <div class="card-body px-lg-5 py-lg-5">
                                 <div class="text-center text-muted mb-4">
                                     <small>sign in with credentials</small>
-                                  </div>
+                                </div>
                                 <form role="form" action="{{url_for('portal.signin')}}" method="POST">
                                     <div class="form-group mb-3">
                                         <div class="input-group input-group-alternative">
@@ -47,11 +63,13 @@
                                                 <span class="input-group-text"><i
                                                         class="ni ni-lock-circle-open"></i></span>
                                             </div>
-                                            <input class="form-control" name="password" placeholder="Password" type="password">
+                                            <input class="form-control" name="password" placeholder="Password"
+                                                type="password">
                                         </div>
                                     </div>
                                     <div class="custom-control custom-control-alternative custom-checkbox">
-                                        <input class="custom-control-input" id=" customCheckLogin" type="checkbox">
+                                        <input class="custom-control-input" id=" customCheckLogin" name="remember"
+                                            type="checkbox">
                                         <label class="custom-control-label" for=" customCheckLogin"><span>Remember
                                                 me</span></label>
                                     </div>
@@ -63,10 +81,11 @@
                         </div>
                         <div class="row mt-3">
                             <div class="col-6">
-                                <a href="#" class="text-light"><small>Forgot password?</small></a>
+                                <a href="{{url_for('portal.forget_password')}}" class="text-light"><small>Forgot password?</small></a>
                             </div>
                             <div class="col-6 text-right">
-                                <a href="{{url_for('portal.register')}}" class="text-light"><small>Create new account</small></a>
+                                <a href="{{url_for('portal.register')}}" class="text-light"><small>Create new
+                                        account</small></a>
                             </div>
                         </div>
                     </div>

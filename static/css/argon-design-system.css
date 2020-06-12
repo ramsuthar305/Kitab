@@ -24480,13 +24480,13 @@ pre > code.highlight {
   margin-bottom: auto;
   margin-top: auto;
   height: 50px;
-  background-color: #353b48;
+  background-color: #f1c40f;
   border-radius: 25px;
   padding: 6px;
   }
 
   .search_input{
-  color: white;
+  color: #32325d;
   border: 0;
   outline: 0;
   background: none;
@@ -24505,7 +24505,7 @@ pre > code.highlight {
 
   .searchbar:hover > .search_icon{
   background: white;
-  color: #e74c3c;
+  color: #32325d;
   }
 
   .search_icon{
@@ -24516,7 +24516,7 @@ pre > code.highlight {
   justify-content: center;
   align-items: center;
   border-radius: 50%;
-  color:white;
+  color:#32325d;
   text-decoration:none;
   }
 

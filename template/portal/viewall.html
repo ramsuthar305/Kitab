@@ -1,37 +1,47 @@
 {% extends 'portal/base.html' %}
 {% block main_page %}
-<div class="bg-white">
+<div class="">
     {% include 'portal/header.html' %}
-    <hr>
-    <div class="container">
-        <div class="d-flex justify-content-between h-100 my-4">
-            <h2 class="display-2 pl-2">Classics</h2>
+
+    <div class="container py-4 px-0 ">
+        <div class="d-flex justify-content-between h-100 my-4   rounded ">
+            <h4 class="display-3 py-1 px-4 " style="background-color: #f1c40f; border-radius: 10vh;">
+                {{books[0]['genre']}}</h4>
             <div class="searchbar">
-                <input class="search_input" type="text" name="" placeholder="Search...">
+                <input class="search_input" type="text" name="" onkeyup="myFunction()" id="book_search"
+                    placeholder="Search...">
                 <a href="#" class="search_icon"><i class="fas fa-search"></i></a>
             </div>
         </div>
 
-        <div class="d-flex flex-wrap">
-            {% for i in range(20) %}
-            <div class=" col-md-3 py-3 px-2">
-                <div class="card pb-2">
-                    <div class="m-auto">
-                        <img src="https://images-na.ssl-images-amazon.com/images/I/516ga-QDjAL._SX326_BO1,204,203,200_.jpg"
-                            alt="" class="m-auto rounded pt-2" style="width: 90%;display: block;">
+        <div class="d-flex flex-wrap" id="book_container">
+            {% for book in books %}
+            <div class="col-md-3 px-1">
+                <div class=" card my-4  p-1 book">
+                    <div class="m-auto pt-2"
+                        onclick="location.href='{{url_for('portal.product',book_id=book['_id'])}}';">
+                        <img src="{{book['front_cover']}}" alt="" style=" height: 36vh;">
                     </div>
-                    <div class="pt-2">
-                        <h5 class="h-4 text-center" style="font-weight: bold;">Revolution 2020</h5>
-                        <p class=" text-center" style="margin-top: -5%;">Chetan bhagat</p>
+                    <div class="pt-2 title">
+                        <h6 class="h-4 text-center"
+                            style="font-weight: bold;overflow: hidden; white-space: nowrap; text-overflow: ellipsis; "
+                            id="title">{{book['title']}}</h6>
+                        <p class=" text-center" style="margin-top: -5%;" id="author">{{book['author']}}</p>
                     </div>
+                    {% if book['qty'] == "0" %}
+                    <div>
+                        <h5 class="text-center text-danger">Out of stock</h5>
+                    </div>
+                    {% else %}
                     <div class="text-center m-auto">
-                        <button class="btn btn-link p-0 text-default"><i class="fa fa-cart-plus" aria-hidden="true"></i>
+                        <button class="btn btn-link p-0 text-default" id="{{book['_id']}}"
+                            onclick="addToCart(this.id);"><i class="fa fa-cart-plus" aria-hidden="true"></i>
                             Add to cart
                         </button>
                     </div>
+                    {% endif %}
                 </div>
             </div>
-
             {% endfor %}
         </div>
     </div>

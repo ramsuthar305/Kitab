@@ -4,6 +4,11 @@ from flask import session
 import hashlib
 import json
 from datetime import datetime
+from bson import ObjectId
+import smtplib, ssl
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
 #custom imports
 from .models import Users
 from admin.models import Books
@@ -30,7 +35,8 @@ def index():
 
 @portal.route('/viewall')
 def viewall():
-    return render_template('portal/viewall.html')
+    books=book_object.get_books_by_genre(request.args.get('genre'))
+    return render_template('portal/viewall.html',books=books)
 
 @portal.route('/cart')
 def cart():
@@ -40,6 +46,7 @@ def cart():
     detailed_cart={}
     for item in cart:
         book=book_object.get_book_by_id(item['_id'])
+        print(book)
         book['qty']=item['qty']
         books.append(book)
         total=total+int(book['price'])*int(item['qty'])
@@ -143,11 +150,20 @@ def signin():
             #x = request.get_json(force=True)
             email= request.form.get('email')
             password= request.form.get('password')
-            print('here',email,password)
+            remember_me=request.form.get('remember')
+            if remember_me=="on":
+                session["remember_me"]=True
+            else:
+                session["remember_me"]=False
+
+            print('here',email,remember_me)
             login_status = user_object.login_user(email,password)
             print(login_status)
             if login_status==True:
                 return redirect(url_for("portal.index"))
+            elif login_status==False:
+                flash("Invalid credentials")
+                return render_template('portal/login.html')
             else:
                 flash(login_status)
                 return render_template('portal/login.html')
@@ -157,6 +173,25 @@ def signin():
         print('hereerreor',error)
         return render_template('portal/login.html')
 
+@portal.route('/closing', methods=['POST','GET'])
+def closing():
+    print("Calling")
+    if not session['remember_me']:
+        session['logged_in']=False
+        session["username"] = None
+        session["name"] = None
+        session['id'] = None
+    return "done"
+
+@portal.route('/change_qty',methods=['GET','POST'])
+def change_qty():
+    data=request.get_data()
+    data=json.loads(data) 
+    if data['type']=='add':
+        new_qty=user_object.add_qty(data['id'])
+    else:
+        new_qty=user_object.minus_qty(data['id'])
+    return jsonify(new_qty)
 
 @portal.route('/logout', methods=['POST','GET'])
 def logout():
@@ -226,3 +261,54 @@ def edit_profile():
             return redirect(url_for('portal.profile'))
     except Exception as error:
         return redirect(url_for('portal.profile'))
+
+@portal.route('/forget_password',methods=["GET","POST"])
+def forget_password():
+    send_email("ramsuthar305@gmail.com","hii","forget my password")
+    return redirect(url_for('portal.signin'))
+
+def send_email(to,message,subject):
+    sender_email = "kitaab.info123@gmail.com"
+    receiver_email = to
+    password = "123@cnd@"
+
+    message = MIMEMultipart("alternative")
+    message["Subject"] = subject
+    message["From"] = sender_email
+    message["To"] = receiver_email
+
+    # Create the plain-text and HTML version of your message
+    text = """\
+    Hi,
+    How are you?
+    Real Python has many great tutorials:
+    www.realpython.com"""
+    html = """\
+    <html>
+    <body>
+        <p>Hi,<br>
+        How are you?<br>
+        <img src="https://images-eu.ssl-images-amazon.com/images/I/51btCZ-13mL._SY445_QL70_ML2_.jpg">
+        <a href="http://www.realpython.com">Real Python</a> 
+        has many great tutorials.
+        </p>
+    </body>
+    </html>
+    """
+
+    # Turn these into plain/html MIMEText objects
+    part1 = MIMEText(text, "plain")
+    part2 = MIMEText(html, "html")
+
+    # Add HTML/plain-text parts to MIMEMultipart message
+    # The email client will try to render the last part first
+    message.attach(part1)
+    message.attach(part2)
+
+    # Create secure connection with server and send email
+    context = ssl.create_default_context()
+    with smtplib.SMTP_SSL("smtp.gmail.com", 465, context=context) as server:
+        server.login(sender_email, password)
+        server.sendmail(
+            sender_email, receiver_email, message.as_string()
+        )

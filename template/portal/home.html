@@ -38,7 +38,7 @@
             <div class="d-flex justify-content-between">
 
                 <h5 class="pl-2" style="font-weight: 600;">{{i['genre']}}</h5>
-                <a href="{{url_for('portal.viewall')}}">
+                <a href="{{url_for('portal.viewall', genre=i['genre'])}}">
                     <h6 class="pl-2" style="font-weight: 500;">view all </h6>
                 </a>
             </div>
@@ -46,8 +46,8 @@
                 {% for j in i['books'] %}
 
                 <div class="col-md-3 card mx-1 p-2 ">
-                    <div onclick="location.href='{{url_for('portal.product',book_id=j['_id'])}}';">
-                        <img src="{{j['front_cover']}}" alt="" style="width: 100%;">
+                    <div class="m-auto" onclick="location.href='{{url_for('portal.product',book_id=j['_id'])}}';">
+                        <img src="{{j['front_cover']}}" alt="" style=" height: 36vh;">
                     </div>
                     <div class="pt-2">
                         <h5 class="h-4 text-center" style="font-weight: bold;">{{j['title']}}</h5>

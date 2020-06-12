@@ -35,7 +35,7 @@
                         </div>
                         {% else %}
                         <div class="action">
-                            <button class="add-to-cart btn btn-success" type="button"><i class="fa fa-cart-plus"
+                            <button class="add-to-cart btn btn-success" id="{{book['_id']}}" onclick="addToCart(this.id);" type="button"><i class="fa fa-cart-plus"
                                     aria-hidden="true"></i> add to cart</button>
                         </div>
                         {% endif %}

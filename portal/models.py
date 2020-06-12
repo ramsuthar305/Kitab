@@ -67,7 +67,7 @@ class Users:
 				session['id'] = str(login_result["_id"])
 				return True
 			else:
-				return "User does not exist"
+				return False
 		except Exception as error:
 			return error
 
@@ -135,7 +135,42 @@ class Users:
 			return user['cart']
 		except Exception as error:
 			print(error)
-			
+
+	def get_current_qty(self,id):
+		user_cart=self.mongo.users.find_one({"_id":session["id"]},{"cart":1})
+		self.current_qty=0
+		for item in user_cart['cart']:
+			if item["_id"]==ObjectId(id):
+				self.current_qty=item['qty']
+		return self.current_qty
+
+	def add_qty(self,id):
+		#try:
+		self.curren_qty=self.get_current_qty(id)
+		
+		print('This is current qty: ',type(self.current_qty))
+		user=self.mongo.users.update({"_id":session["id"], "cart":{"$elemMatch":{"_id":ObjectId(id)}}},{"$set":{"cart.$.qty":self.current_qty+1}})
+		return {'status':True,'qty':self.current_qty+1}
+
+	def minus_qty(self,id):
+		#try:
+		self.curren_qty=self.get_current_qty(id)
+		print('This is current qty: ',type(self.current_qty))
+		book=self.mongo.books.find_one({"_id":ObjectId(id)})
+		print(book)
+		if int(book['qty'])-self.curren_qty > 0:
+			if self.curren_qty-1==0:
+				self.mongo.users.update({"_id":session["id"]},{"$pull":{"cart":{"_id":ObjectId(id)}}})
+				return {'status':True,'qty':self.current_qty-1}
+			elif not self.curren_qty-1 < 0:
+				user=self.mongo.users.update({"_id":session["id"], "cart":{"$elemMatch":{"_id":ObjectId(id)}}},{"$set":{"cart.$.qty":self.current_qty-1}})
+				return {'status':True,'qty':self.current_qty-1}
+			else:
+				return {'status':False,'qty':self.curren_qty}
+		else:
+			return {'status':False,error:"Books out of stock"}
+
+
 	def user_edit(self, data):
 		try:
 			result = self.mongo.users.update_one({"_id": session["id"]}, {"$set": data})

@@ -83,6 +83,61 @@
         }
       });
     });
+
+    function myFunction() {
+      // Declare variables
+      var input, filter, ul, li, a, i, txtValue;
+      input = document.getElementById('book_search');
+      filter = input.value.toUpperCase();
+      ul = document.getElementById("book_container");
+      li = ul.getElementsByClassName('book');
+
+      // Loop through all list items, and hide those who don't match the search query
+      for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByClassName("title")[0];
+
+        txtValue = a.textContent || a.innerText;
+        if (txtValue.toUpperCase().indexOf(filter) > -1) {
+          li[i].style.display = "";
+        } else {
+          li[i].style.display = "none";
+        }
+      }
+    }
+    window.onbeforeunload = function () {
+      $.ajax({
+        url: '{{url_for("portal.closing")}}',
+        type: 'GET',
+        success: function (response) {
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
+
+    function changeQty(type, id) {
+      alert('clicked: ' + id + type);
+
+      $.ajax({
+        url: '{{url_for("portal.change_qty")}}',
+        data: JSON.stringify({ id: id, type: type }),
+        type: 'POST',
+        success: function (response) {
+          alert(response)
+          if (response.status) {
+            alert("response: " + response.qty);
+            $("#" + id + "id").html(response.qty);
+          } else {
+            alert("response: " + response.alert);
+          }
+
+        },
+        error: function (error) {
+          console.log(error);
+        }
+      });
+    }
   </script>
   <!-- Optional plugins -->
   <script src="/assets/vendor/PLUGIN_FOLDER/PLUGIN_SCRIPT.js"></script>
